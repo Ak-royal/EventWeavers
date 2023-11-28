@@ -38,16 +38,38 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
-
     z-index: -1; /* Place it behind other content */
 }
 
 .blurry-image-container img {
+    max-width: 100%; /* Set maximum width to 100% of the container */
+    max-height: 100%; /* Set maximum height to 100% of the container */
     width: 100%;
-    height: 100%;
-    filter: blur(5px) brightness(60%); /* Adjust the blur and brightness values as needed */
+    height: 100%; /* Maintain aspect ratio while scaling */
+    filter: blur(0.5vw) brightness(60%); /* Adjust the blur and brightness values using vw (viewport width) units */
 }
 
+/* Adjust filter values for smaller screens */
+@media (max-width: 768px) {
+    max-width: 100%; /* Set maximum width to 100% of the container */
+    max-height: 100%; /* Set maximum height to 100% of the container */
+    width: 100%;
+    height: auto;
+    .blurry-image-container img {
+        filter: blur(0.5vw) brightness(60%);
+    }
+}
+
+/* Adjust filter values for even smaller screens */
+@media (max-width: 480px) {
+    max-width: 100%; /* Set maximum width to 100% of the container */
+    max-height: 100%; /* Set maximum height to 100% of the container */
+    width: 100%;
+    height: auto;
+    .blurry-image-container img {
+        filter: blur(0.5vw) brightness(60%);
+    }
+}
 
 
 
@@ -169,8 +191,6 @@ section h4 {
     padding: 1rem 5%;
     display: flex;
     align-items: center;
-    position: fixed;
-
     justify-content: space-between;
 }
 
@@ -178,19 +198,11 @@ section h4 {
     font-size: 2.5rem;
     color: var(--clr3);
     font-weight: 600;
-
     letter-spacing: .1rem;
-}
-
-span {
-    color: white;
-    font-size: 2.5rem;
-    font-size: 3rem;
 }
 
 .head .navbar {
     font-size: 4rem;
-
     justify-content: space-between;
     font-weight: 420;
 }
@@ -200,37 +212,36 @@ span {
     color: white;
     font-size: 2rem;
     padding: 1.5rem 1rem;
-    font-weight: normal; /* Set the default font weight */
-    /* Remove default underline */
+    font-weight: normal;
     position: relative;
-    transition: all 0.3s ease; 
-     font-weight: bold;
-
-    /* Add a smooth transition effect */
+    transition: all 0.3s ease;
+    font-weight: bold;
 }
 
 .head .navbar a:hover {
-    text-decoration: none; /* Remove the default underline on hover */
-    font-weight: bold; /* Bold the text on hover */
+    text-decoration: none;
+    font-weight: bold;
     overflow: hidden;
-    color:  #050A30; /* Hide overflowing content */
+    color: #050A30;
 }
 
 .head .navbar a::before {
     content: '';
     position: absolute;
-    width: 100%;
-    height: 3px; /* Set the initial height of the underline */
+    width: 0; /* Set initial width to 0 */
+    height: 3px;
+
     bottom: 0;
-    left: 0;
-    background-color: #050A30; /* Set the color of the underline */
-    transform: scaleX(0); /* Initially, set the scale of X to 0 */
+    left: 50%; /* Center the underline */
+    background-color: #050A30;
+    transform: translateX(-50%) scaleX(0); /* Center and hide the underline */
     transform-origin: bottom right;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, width 0.3s ease; /* Add width transition */
 }
 
 .head .navbar a:hover::before {
-    transform: scaleX(1); /* On hover, set the scale of X to 1 to reveal the underline */
+    width: 100%; /* Expand the width to cover the text on hover */
+    transform: translateX(-50%) scaleX(1); /* Center and reveal the underline */
     transform-origin: bottom left;
 }
 
@@ -240,6 +251,35 @@ span {
     color: white;
     font-size: strong;
 }
+
+/* Responsive Styles */
+
+@media (max-width: 768px) {
+    .head {
+        padding: 1rem 2%;
+    }
+
+    .head .navbar {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .head .navbar.active {
+        display: flex;
+    }
+
+    .head .navbar a {
+        padding: 1.5rem 2rem;
+    }
+}
+
+
 
 
 /*----------------------Home-------------*/
@@ -730,123 +770,4 @@ flex-direction: row;
 
 //moving card
 
-#moving-card {
-  overflow: hidden;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  background: blue;
-  -webkit-perspective: 1000px;
-  perspective: 900px;
-  -webkit-transform-style: preserve-3d;
-  transform-style: preserve-3d;
-}
 
-#drag-container,
-#spin-container {
-  position: relative;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  margin: auto;
-  -webkit-transform-style: preserve-3d;
-  transform-style: preserve-3d;
-  -webkit-transform: rotateX(-10deg);
-  transform: rotateX(-10deg);
-}
-
-#drag-container img,
-#drag-container video {
-  -webkit-transform-style: preserve-3d;
-  transform-style: preserve-3d;
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  line-height: 200px;
-  font-size: 50px;
-  text-align: center;
-  -webkit-box-shadow: 0 0 8px #fff;
-  box-shadow: 0 0 8px #fff;
-  -webkit-box-reflect: below 10px linear-gradient(transparent, transparent, #0005);
-}
-
-#drag-container img:hover,
-#drag-container video:hover {
-  -webkit-box-shadow: 0 0 15px #fffd;
-  box-shadow: 0 0 15px #fffd;
-  -webkit-box-reflect: below 10px linear-gradient(transparent, transparent, #0056);
-}
-
-#drag-container p {
-  font-family: Serif;
-  position: absolute;
-  top: -30%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: black;
-}
-
-#ground {
-  width: 900px;
-  height: 900px;
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%) rotateX(90deg);
-  transform: translate(-50%, -50%) rotateX(90deg);
-  background: -webkit-radial-gradient(center center, farthest-side, #9993, transparent);
-}
-
-#music-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-@keyframes spin {
-  from {
-    -webkit-transform: rotateY(0deg);
-    transform: rotateY(0deg);
-  }
-  to {
-    -webkit-transform: rotateY(360deg);
-    transform: rotateY(360deg);
-  }
-}
-
-@keyframes spinRevert {
-  from {
-    -webkit-transform: rotateY(360deg);
-    transform: rotateY(360deg);
-  }
-  to {
-    -webkit-transform: rotateY(0deg);
-    transform: rotateY(0deg);
-  }
-}
-
-/* Media Query for responsiveness */
-@media (max-width: 768px) {
-  #moving-card {
-    flex-direction: column; /* Change flex direction to column for small screens */
-  }
-
-  #drag-container img,
-  #drag-container video {
-    width: 80%; /* Adjust the size for smaller screens */
-    height: auto;
-    font-size: 30px; /* Adjust the font size for smaller screens */
-  }
-
-  #drag-container p {
-    top: -20%; /* Adjust position for smaller screens */
-    font-size: 16px; /* Adjust font size for smaller screens */
-  }
-
-  #ground {
-    width: 80%; /* Adjust the ground size for smaller screens */
-    height: 500px;
-  }
-}
